@@ -2,7 +2,12 @@ name: Cut Release Branch
 
 on:
   release:
-    types: [published]
+    # `published` fires on initial publish (regular OR pre-release).
+    # `released` and `prereleased` fire on transitions between those two states later.
+    # The job is idempotent (no-ops if the branch already exists), so the extra
+    # triggers are safe and ensure release/<N> exists no matter how the release
+    # entered its current state.
+    types: [published, released, prereleased]
 
 permissions:
   contents: write
