@@ -39,3 +39,5 @@ If you want to see…
 - **The full design rationale** — read [`docs/superpowers/specs/2026-05-01-release-notes-automation-design.md`](docs/superpowers/specs/2026-05-01-release-notes-automation-design.md).
 
 > Links to specific PRs and releases are filled in after the showcase walkthrough is run. Check the [Releases](../../releases) and [Pull Requests](../../pulls?q=is%3Apr) tabs to navigate the artifacts.
+
+<!-- Last touched by PR #7 demo -->
