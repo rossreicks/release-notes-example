@@ -2,7 +2,7 @@ name: Label PR
 
 on:
   pull_request:
-    types: [opened, edited, synchronize]
+    types: [opened, edited, synchronize, reopened]
 
 permissions:
   contents: read
@@ -22,8 +22,6 @@ jobs:
     name: Apply type label (title)
     runs-on: ubuntu-latest
     steps:
-      - uses: TimonVS/pr-labeler-action@v5
+      - uses: release-drafter/release-drafter/autolabeler@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          configuration-path: .github/pr-labeler.yml
