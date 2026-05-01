@@ -1,0 +1,24 @@
+name: Release Notes
+
+on:
+  push:
+    branches: [main, 'release/*']
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  draft:
+    name: Draft release notes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update draft release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fn = require('./.github/scripts/draft-release-notes.js');
+            await fn({ github, context, core });
