@@ -15,6 +15,16 @@ The repo is intentionally empty — `frontend/`, `backend/`, and `infra/` only c
 
 Versioning scheme: `<RELEASE>.<PATCH>` (e.g., `467.0`, `467.1`, `468.0`). No `v` prefix. Regular releases bump the release number; hotfixes bump the patch.
 
+## Local verification
+
+The release-notes generator is plain Node with no dependencies. Run the unit tests with:
+
+```bash
+node --test '.github/scripts/__tests__/*.test.js'
+```
+
+Expected: 24 tests pass (versioning + rendering).
+
 ## Guided Tour
 
 If you want to see…
