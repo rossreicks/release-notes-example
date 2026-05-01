@@ -29,15 +29,14 @@ Expected: 24 tests pass (versioning + rendering).
 
 If you want to see…
 
-- **How labels are applied automatically** — open any merged PR (e.g., #1) and look at the Labels and the Checks tab.
-- **How a multi-area PR appears in two places** — see PR #6 (touches frontend + backend) and find it in both sections of release [468.0](../../releases).
-- **The full rendered release notes** — read release [468.0](../../releases).
-- **How an empty area is suppressed** — compare 468.0 (has Infrastructure) with 469.0 (does not).
-- **How the hotfix flow works** — see PR #11 merged into `release/467` and the resulting [467.1 release](../../releases).
-- **The implementation** — read `.github/workflows/release-notes.yml` and `.github/scripts/draft-release-notes.js`.
+- **How labels are applied automatically** — open any merged PR (e.g., [#1](https://github.com/rossreicks/release-notes-example/pull/1)) and look at the Labels and the Checks tab.
+- **How a multi-area PR appears in two places** — see [PR #6](https://github.com/rossreicks/release-notes-example/pull/6) (touches frontend + backend) and find it in both sections of release [468.0](https://github.com/rossreicks/release-notes-example/releases/tag/468.0).
+- **The full rendered release notes** — read release [468.0](https://github.com/rossreicks/release-notes-example/releases/tag/468.0).
+- **How an empty area is suppressed** — compare [468.0](https://github.com/rossreicks/release-notes-example/releases/tag/468.0) (has Infrastructure) with [469.0](https://github.com/rossreicks/release-notes-example/releases/tag/469.0) (does not).
+- **How the hotfix flow works** — see [PR #12](https://github.com/rossreicks/release-notes-example/pull/12) merged into `release/468` and the resulting [468.1 release](https://github.com/rossreicks/release-notes-example/releases/tag/468.1).
+- **How release branches get auto-cut** — when [470.0](https://github.com/rossreicks/release-notes-example/releases/tag/470.0) was published, the `Cut Release Branch` workflow auto-created `release/470`. Future hotfixes against that line have somewhere to land.
+- **The implementation** — read `.github/workflows/release-notes.yml`, `.github/workflows/cut-release-branch.yml`, and `.github/scripts/draft-release-notes.js`.
 - **The labeling rules** — read `.github/labeler.yml` (area paths) and `.github/release-drafter.yml` (title regex).
 - **The full design rationale** — read [`docs/superpowers/specs/2026-05-01-release-notes-automation-design.md`](docs/superpowers/specs/2026-05-01-release-notes-automation-design.md).
-
-> Links to specific PRs and releases are filled in after the showcase walkthrough is run. Check the [Releases](../../releases) and [Pull Requests](../../pulls?q=is%3Apr) tabs to navigate the artifacts.
 
 <!-- Last touched by PR #7 demo -->
