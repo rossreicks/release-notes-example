@@ -78,9 +78,6 @@ function renderReleaseNotes({
     if (rendered) sections.push(rendered);
   }
 
-  const authors = [...new Set(prs.map((p) => p.author))].sort();
-  sections.push(`## 🙌 Contributors\nThanks to ${authors.map((a) => `@${a}`).join(', ')} for their contributions to this release!\n`);
-
   if (anchorTag) {
     sections.push(`---\n**Full Changelog**: ${repoUrl}/compare/${anchorTag}...${nextTag}`);
   }

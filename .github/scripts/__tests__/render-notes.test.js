@@ -131,22 +131,13 @@ test('suppresses empty type heading within an area', () => {
   assert.doesNotMatch(md, /### 📚 Documentation/);
 });
 
-test('renders contributors footer with deduplicated authors sorted', () => {
+test('does not render a Contributors section (GitHub adds one)', () => {
   const md = renderReleaseNotes({
     ...baseConfig,
-    prs: [
-      pr(1, 'feat: a', 'alice', ['frontend', 'feature']),
-      pr(2, 'fix: b', 'bob',   ['frontend', 'fix']),
-      pr(3, 'feat: c', 'alice', ['backend', 'feature']),
-    ],
+    prs: [pr(1, 'feat: a', 'alice', ['frontend', 'feature'])],
   });
-  assert.match(md, /## 🙌 Contributors/);
-  assert.match(md, /Thanks to @alice, @bob for their contributions to this release!/);
-});
-
-test('omits contributors heading when no PRs', () => {
-  const md = renderReleaseNotes({ ...baseConfig, prs: [] });
   assert.doesNotMatch(md, /## 🙌 Contributors/);
+  assert.doesNotMatch(md, /Thanks to/);
 });
 
 test('renders full changelog link with anchor and next tags', () => {

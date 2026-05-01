@@ -127,11 +127,12 @@ Permissions: `contents: write`, `pull-requests: read`.
    - main           → mode = regular, lineage = none
    - release/<N>    → mode = hotfix,  lineage = N
 
-2. Find anchor — the latest **published GitHub Release** (not draft) whose tag matches:
+2. Find anchor — the latest **non-draft GitHub Release** (regular OR pre-release) whose tag matches:
    - regular: /^\d+\.0$/ → if none exists, bootstrap mode
    - hotfix:  /^<N>\.\d+$/ → if none exists, bootstrap mode
-   Use the anchor release's tag commit SHA as the "since" point in step 4.
-   Drafts are excluded from anchor selection so an in-progress draft doesn't anchor itself.
+   Use the anchor release's `published_at` timestamp as the "since" point in step 4.
+   Drafts are excluded (their tag_name is unstable: `untagged-XXX`).
+   Pre-releases ARE included — see "Pre-release semantics" below.
 
 3. Compute next version:
    - regular w/ anchor:    (anchor.release + 1) + ".0"
@@ -208,12 +209,23 @@ const OTHER_TYPE_HEADING = '📦 Other Changes';
 ## 📦 Other Changes
 - update top-level README badges by @rreicks in #47
 
-## 🙌 Contributors
-Thanks to @rreicks, @other-dev for their contributions to this release!
-
 ---
 **Full Changelog**: https://github.com/<owner>/<repo>/compare/467.0...468.0
 ```
+
+(GitHub appends a "New Contributors" section to release notes automatically; we don't render one.)
+
+### Pre-release semantics
+
+The `prerelease` flag on a GitHub Release is treated as **"frozen for QA / code freeze."** The release line is claimed but not yet shipped to customers.
+
+- `468.1` regular published → in production
+- `469.0` pre-release published → in QA, code freeze on the `release/469` branch
+- New PRs to `main` accumulate into draft `470.0` (the next release line)
+- Hotfixes to the QA line: PR opened against `release/469`, merged → updates draft `469.1`. Mark `469.1` as pre-release until QA approves the fix.
+- When QA approves: edit the release and uncheck "This is a pre-release" → it becomes the regular customer release for that line.
+
+Implementation: `listAllPublishedTags` includes both regular AND pre-release versions when computing the next version. Drafts are excluded (their `tag_name` is unstable).
 
 Empty sections are suppressed at every level: if Frontend has no PRs, no `## 🎨 Frontend` heading appears; if Frontend has PRs but no Features, no `### 🚀 Features` subheading appears.
 

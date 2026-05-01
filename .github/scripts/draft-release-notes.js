@@ -22,12 +22,15 @@ function branchFromRef(ref) {
 }
 
 async function listAllPublishedTags(github, owner, repo) {
+  // Pre-releases count: marking 469.0 as pre-release means "frozen for QA / code freeze."
+  // The release line is claimed; new work on main targets the next release (470.0).
+  // Drafts are excluded because their tag_name is unstable ('untagged-XXX').
   const tags = [];
   for await (const { data } of github.paginate.iterator(github.rest.repos.listReleases, {
     owner, repo, per_page: 100,
   })) {
     for (const r of data) {
-      if (!r.draft && !r.prerelease) tags.push(r.tag_name);
+      if (!r.draft) tags.push(r.tag_name);
     }
   }
   return tags;
