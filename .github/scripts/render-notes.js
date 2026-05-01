@@ -44,7 +44,9 @@ function renderArea(areaHeading, typeBuckets, typeOrder, otherTypeHeading) {
     const prs = typeBuckets.get(typeHeading);
     if (!prs || prs.length === 0) continue;
     any = true;
-    lines.push(`### ${typeHeading}`);
+    if (typeHeading !== areaHeading) {
+      lines.push(`### ${typeHeading}`);
+    }
     for (const pr of prs) {
       lines.push(`- ${stripPrefix(pr.title)} by @${pr.author} in #${pr.number}`);
     }

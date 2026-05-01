@@ -79,6 +79,18 @@ test('PR with no area label goes to top-level Other Changes', () => {
   assert.match(md, /- update top-level README badges by @rreicks in #7/);
 });
 
+test('suppresses redundant type heading when it matches area heading', () => {
+  const md = renderReleaseNotes({
+    ...baseConfig,
+    prs: [pr(7, 'update top-level README badges', 'rreicks', [])],
+  });
+  // Should have ## Other Changes once, but NOT also ### Other Changes inside it
+  const h2 = md.match(/^## 📦 Other Changes$/gm);
+  const h3 = md.match(/^### 📦 Other Changes$/gm);
+  assert.equal(h2.length, 1);
+  assert.equal(h3, null);
+});
+
 test('PR with area but no type goes to within-area Other Changes', () => {
   const md = renderReleaseNotes({
     ...baseConfig,
