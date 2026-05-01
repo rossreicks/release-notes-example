@@ -105,6 +105,13 @@ module.exports = async ({ github, context, core }) => {
     });
     release = data;
   } else if (!existing) {
+    // For hotfix branches, don't auto-create empty drafts — they imply a
+    // pending hotfix that doesn't exist. Only create when there's content.
+    // (Main always gets a draft so the release manager has a visible target.)
+    if (mode === 'hotfix' && prs.length === 0) {
+      core.info(`No hotfix PRs on ${branch} since ${anchorTag || 'beginning'}; skipping empty draft.`);
+      return;
+    }
     const { data } = await github.rest.repos.createRelease({
       owner, repo, tag_name: nextTag, name: nextTag, body, draft: true,
       target_commitish: branch,
