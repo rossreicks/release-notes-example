@@ -39,6 +39,9 @@ async function findReleaseByTag(github, owner, repo, tag) {
   })) {
     for (const r of data) {
       if (r.tag_name === tag) return r;
+      // Drafts without an existing git tag get tag_name='untagged-...' from the API,
+      // but our intended tag is preserved in the name field.
+      if (r.draft && r.name === tag) return r;
     }
   }
   return null;
