@@ -15,6 +15,22 @@ The repo is intentionally empty — `frontend/`, `backend/`, and `infra/` only c
 
 Versioning scheme: `<RELEASE>.<PATCH>` (e.g., `467.0`, `467.1`, `468.0`). No `v` prefix. Regular releases bump the release number; hotfixes bump the patch.
 
+## Release lifecycle
+
+The GitHub Release flags map to lifecycle stages:
+
+| Flag | Meaning here |
+|---|---|
+| **Draft** | Auto-generated, still being assembled. Updated on every PR merge. |
+| **Pre-release** | Code freeze. The release line is claimed; QA is testing it. Hotfixes against `release/<N>` produce additional pre-release patches (`469.1`, `469.2`, ...) until QA approves. |
+| **Latest / regular published** | Shipped to customers. |
+
+Because pre-releases count as "real, version-claiming releases," marking `469.0` as pre-release means new work on `main` automatically targets the next line (`470.0`). When a release is published in any state (regular or pre-release), the `Cut Release Branch` workflow auto-creates `release/<N>` if it doesn't exist yet — so hotfix PRs always have somewhere to land. The same workflow re-fires on `released` / `prereleased` transitions, covering the case where a release is toggled between states later.
+
+Empty draft behavior is asymmetric on purpose:
+- `main` always shows a draft for the next release, even when no PRs have merged yet — gives the release manager a visible target.
+- `release/<N>` only shows a hotfix draft once an actual hotfix PR is merged. Quiet branches don't pollute the Releases tab.
+
 ## Local verification
 
 The release-notes generator is plain Node with no dependencies. Run the unit tests with:
@@ -34,7 +50,8 @@ If you want to see…
 - **The full rendered release notes** — read release [468.0](https://github.com/rossreicks/release-notes-example/releases/tag/468.0).
 - **How an empty area is suppressed** — compare [468.0](https://github.com/rossreicks/release-notes-example/releases/tag/468.0) (has Infrastructure) with [469.0](https://github.com/rossreicks/release-notes-example/releases/tag/469.0) (does not).
 - **How the hotfix flow works** — see [PR #12](https://github.com/rossreicks/release-notes-example/pull/12) merged into `release/468` and the resulting [468.1 release](https://github.com/rossreicks/release-notes-example/releases/tag/468.1).
-- **How release branches get auto-cut** — when [470.0](https://github.com/rossreicks/release-notes-example/releases/tag/470.0) was published, the `Cut Release Branch` workflow auto-created `release/470`. Future hotfixes against that line have somewhere to land.
+- **How release branches get auto-cut** — when `470.0` was first published (it's since been demoted back to draft), the `Cut Release Branch` workflow auto-created `release/470`. The same workflow fires on `released` / `prereleased` state transitions, so toggling `469.0` to pre-release would cut `release/469` even after the initial publish.
+- **What pre-release means** — see [469.0](https://github.com/rossreicks/release-notes-example/releases/tag/469.0): marked **Pre-release** to signal "in QA, code freeze on `release/469`." `468.1` is the actual customer release. New work on `main` automatically targets `470.0` because the script treats `469.0` as a claimed line.
 - **The implementation** — read `.github/workflows/release-notes.yml`, `.github/workflows/cut-release-branch.yml`, and `.github/scripts/draft-release-notes.js`.
 - **The labeling rules** — read `.github/labeler.yml` (area paths) and `.github/release-drafter.yml` (title regex).
 - **The full design rationale** — read [`docs/superpowers/specs/2026-05-01-release-notes-automation-design.md`](docs/superpowers/specs/2026-05-01-release-notes-automation-design.md).
